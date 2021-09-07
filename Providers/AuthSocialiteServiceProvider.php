@@ -2,7 +2,11 @@
 
 namespace Modules\AuthSocialite\Providers;
 
+
 use Illuminate\Support\ServiceProvider;
+use Modules\BaseCore\Contracts\Services\CompositeurThemeContract;
+use Modules\BaseCore\Contracts\Views\AfterLoginContract;
+use Modules\BaseCore\Entities\TypeView;
 
 class AuthSocialiteServiceProvider extends ServiceProvider
 {
@@ -26,11 +30,16 @@ class AuthSocialiteServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(RouteServiceProvider::class);
+
+
     }
 
     public function boot()
     {
-        //
+        $this->registerViews();
+        app(CompositeurThemeContract::class)->setViews(AfterLoginContract::class, [
+        new TypeView(TypeView::TYPE_LIVEWIRE, 'authsocialite::btn-auth-google')
+    ]);
     }
 
 
@@ -49,4 +58,19 @@ class AuthSocialiteServiceProvider extends ServiceProvider
         }
         return $paths;
     }
+
+    public function registerViews(): void
+    {
+        $viewPath = resource_path('views/modules/' . $this->moduleNameLower);
+
+        $sourcePath = module_path($this->moduleName, 'Resources/views');
+
+        $this->publishes([
+            $sourcePath => $viewPath
+        ], ['views', $this->moduleNameLower . '-module-views']);
+
+        $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->moduleNameLower);
+    }
+
+
 }
