@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'role_default' => ['user']
+    'role_default' => ['user'],
 ];

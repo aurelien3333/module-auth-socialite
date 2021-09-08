@@ -37,12 +37,21 @@ class AuthSocialiteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerViews();
+        $this->registerConfig();
         app(CompositeurThemeContract::class)->setViews(AfterLoginContract::class, [
         new TypeView(TypeView::TYPE_LIVEWIRE, 'authsocialite::btn-auth-google')
     ]);
     }
 
-
+    protected function registerConfig()
+    {
+        $this->publishes([
+            module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
+        ], 'config');
+        $this->mergeConfigFrom(
+            module_path($this->moduleName, 'Config/config.php'), $this->moduleNameLower
+        );
+    }
     public function provides()
     {
         return [];

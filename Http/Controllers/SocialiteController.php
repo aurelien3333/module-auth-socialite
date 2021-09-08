@@ -7,12 +7,9 @@ use Auth;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Fortify\Fortify;
 use Laravel\Socialite\Facades\Socialite;
 use Modules\BaseCore\Contracts\Repositories\PersonneRepositoryContract;
 use Modules\BaseCore\Contracts\Repositories\UserRepositoryContract;
-use Modules\BaseCore\Models\User;
 
 class SocialiteController extends Controller
 {
